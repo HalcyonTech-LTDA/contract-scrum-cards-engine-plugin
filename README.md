@@ -160,17 +160,19 @@ Governed by `rules/definition-of-done-standard.md`. A card cannot be closed as `
 
 ```
 contract-scrum-cards-engine-plugin/
-├── plugin.json                                         # Plugin manifest
+├── plugin.json                                         # Plugin manifest (Antigravity v1 schema)
 ├── README.md                                           # Comprehensive documentation
 ├── LICENSE                                             # MIT License
 ├── .gitignore                                          # VCS ignores (.scratch, logs, output)
 ├── rules/
-│   ├── definition-of-ready-standard.md                 # DoR normative standard
-│   ├── definition-of-done-standard.md                  # DoD normative standard
+│   ├── definition-of-ready-standard.md                 # DoR normative standard (8 pillars)
+│   ├── definition-of-done-standard.md                  # DoD normative standard (8 criteria)
 │   └── contract-to-scrum-traceability.md               # Traceability & taxonomy rules
 ├── skills/
 │   └── contract-scrum-orchestrator/
 │       ├── SKILL.md                                    # Skill definition & DAG orchestration
+│       ├── scripts/
+│       │   └── validate_backlog.py                     # Deterministic automated backlog validator
 │       └── templates/
 │           ├── EPIC.template.md                        # Milestone & Epic card template
 │           ├── USER_STORY.template.md                  # User Story card template
@@ -178,13 +180,16 @@ contract-scrum-cards-engine-plugin/
 │           ├── QA_HOMOLOGATION.template.md             # UAT & Homologation card template
 │           ├── GATE_ZERO_SAFEGUARD.template.md         # Gate Zero & Safeguard card template
 │           └── INDEX_BACKLOG_TAXONOMY.template.md      # Master Backlog Index template
-└── agents/
-    ├── annexes-ingestion-normalizer.md                 # Normalization & Pre-flight agent
-    ├── po-backlog-decomposer.md                        # Functional Epic & Story agent
-    ├── architecture-enabler-decomposer.md              # Technical Enabler & NFR agent
-    ├── qa-homologation-decomposer.md                   # UAT & Acceptance agent
-    ├── governance-safeguard-decomposer.md              # Gate Zero, LGPD & SLA agent
-    └── scrum-quality-auditor.md                        # Fan-In Auditor & Compiler agent
+├── agents/
+│   ├── annexes-ingestion-normalizer.md                 # Normalization & Pre-flight agent
+│   ├── po-backlog-decomposer.md                        # Functional Epic & Story agent
+│   ├── architecture-enabler-decomposer.md              # Technical Enabler & NFR agent
+│   ├── qa-homologation-decomposer.md                   # UAT & Acceptance agent
+│   ├── governance-safeguard-decomposer.md              # Gate Zero, LGPD & SLA agent
+│   └── scrum-quality-auditor.md                        # Fan-In Auditor & Compiler agent
+└── tests/
+    ├── test_plugin_integrity.py                        # Plugin manifest, agents, rules & templates test suite
+    └── test_e2e_backlog_generation.py                  # End-to-end generation, INVEST & DoR/DoD audit test suite
 ```
 
 ---
@@ -213,6 +218,17 @@ The skill automatically activates upon requests such as:
 - *"Decomponha os anexos contratuais do projeto em cards ágeis em markdown organizados por pastas."*
 - *"Crie o backlog de Jira e histórias de usuário a partir do SOW e do protocolo de homologação com DoR e DoD."*
 - *"Gere os cards de épicos, enablers de arquitetura, QA e salvaguardas de Gate Zero para este contrato."*
+
+### 7.3 Deterministic Backlog Validation CLI & Test Suite
+The plugin includes an automated, deterministic verification tool to audit any generated backlog for structural integrity, DoR/DoD conformance, INVEST limits, and bidirectional traceability:
+
+```bash
+# Deterministically audit a generated backlog directory
+python3 skills/contract-scrum-orchestrator/scripts/validate_backlog.py ./backlog
+
+# Run the full automated test suite (unittest discovery)
+python3 -m unittest discover -s tests -p "test_*.py" -v
+```
 
 ---
 

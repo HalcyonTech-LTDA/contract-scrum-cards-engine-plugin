@@ -107,6 +107,7 @@ Com a baseline validada em `.scratch/`, acione simultaneamente os 4 agentes espe
    - Higienização de comentários HTML e eliminação de placeholders expostos.
 3. Se algum card violar os padrões, o auditor aciona o loop de **Reflexion**, determinando o ajuste pontual antes da homologação final.
 4. Compila o documento mestre **`{{output_dir}}/INDEX_BACKLOG_TAXONOMY.md`**, consolidando o Quadro Sinóptico de Governança, métricas totais de esforço (Story Points) e a **Matriz de Rastreabilidade Bidirecional**.
+5. Executa a validação determinística automatizada via `python3 skills/contract-scrum-orchestrator/scripts/validate_backlog.py {{output_dir}}` para assegurar 100% de conformidade estrutural, rastreabilidade bidirecional, DoR/DoD e ausência de vazamento de placeholders ou cards órfãos/fantasmas.
 
 ---
 

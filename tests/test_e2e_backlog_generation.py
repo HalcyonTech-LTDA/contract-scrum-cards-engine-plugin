@@ -1,28 +1,32 @@
 #!/usr/bin/env python3
 """
-End-to-End Simulation Test:
-Validates the full contractual backlog generation logic by ingesting sample contract annexes,
-generating the complete hierarchy (00_GATE_ZERO, 01_EPICS, 02_USER_STORIES, 03_TECHNICAL_ENABLERS,
-04_QA_ACCEPTANCE, 05_GOVERNANCE_SAFEGUARDS, INDEX_BACKLOG_TAXONOMY.md), and verifying
-DoR, DoD, zero HTML comments, and zero unresolved placeholders.
+End-to-End Simulation and Edge Case Test Suite for contract-scrum-cards-engine-plugin.
+Uses standard unittest.TestCase and validate_backlog to verify full generation, DoR/DoD,
+INVEST limits, BDD syntax, output hygiene, and bidirectional traceability.
 """
 
 import os
 import re
 import shutil
+import sys
 import tempfile
+import unittest
 
 PLUGIN_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATES_DIR = os.path.join(PLUGIN_DIR, "skills", "contract-scrum-orchestrator", "templates")
+SCRIPTS_DIR = os.path.join(PLUGIN_DIR, "skills", "contract-scrum-orchestrator", "scripts")
+
+sys.path.insert(0, SCRIPTS_DIR)
+import validate_backlog  # noqa: E402
 
 
-def load_template(name):
+def load_template(name: str) -> str:
     path = os.path.join(TEMPLATES_DIR, name)
     with open(path, "r", encoding="utf-8") as f:
         return f.read()
 
 
-def render_template(content, mapping):
+def render_template(content: str, mapping: dict) -> str:
     result = content
     for k, v in mapping.items():
         result = result.replace(f"{{{{{k}}}}}", str(v))
@@ -31,33 +35,21 @@ def render_template(content, mapping):
     return result
 
 
-def test_e2e_generation():
-    print("--> Starting End-to-End Backlog Generation Simulation...")
-    output_dir = tempfile.mkdtemp(prefix="contract_backlog_test_")
-    try:
-        # 1. Create directory structure
-        dirs = [
-            ".scratch",
-            "00_GATE_ZERO",
-            "01_EPICS",
-            "02_USER_STORIES",
-            "03_TECHNICAL_ENABLERS",
-            "04_QA_ACCEPTANCE",
-            "05_GOVERNANCE_SAFEGUARDS",
-        ]
-        for d in dirs:
-            os.makedirs(os.path.join(output_dir, d), exist_ok=True)
+class TestE2EBacklogGeneration(unittest.TestCase):
 
-        # 2. Simulate normalized JSON baseline
-        baseline = {
-            "project_name": "Portal de Conciliação Financeira",
-            "client_name": "Banco Alpha S.A.",
-            "contractor_name": "HalcyonTech Engenharia",
-            "contracting_mode": "Modo A (Fixed Price por Milestones)",
-            "contract_master_ref": "ANEXO_TECNICO_MESTRE_CONTRATO.md",
-        }
+    def setUp(self):
+        self.output_dir = tempfile.mkdtemp(prefix="contract_backlog_test_")
+        for d in validate_backlog.MANDATORY_DIRS:
+            os.makedirs(os.path.join(self.output_dir, d), exist_ok=True)
+        os.makedirs(os.path.join(self.output_dir, ".scratch"), exist_ok=True)
 
-        # 3. Render Gate Zero card
+    def tearDown(self):
+        if os.path.exists(self.output_dir):
+            shutil.rmtree(self.output_dir)
+
+    def _generate_valid_backlog(self):
+        """Helper that populates self.output_dir with a 100% valid, compliant backlog."""
+        # 1. Gate Zero
         gz_tmpl = load_template("GATE_ZERO_SAFEGUARD.template.md")
         gz_rendered = render_template(
             gz_tmpl,
@@ -87,11 +79,10 @@ def test_e2e_generation():
                 "DOCUMENT_PROOF_TYPE": "Termo de Liberação Integral de Acessos assinado",
             },
         )
-        gz_file = os.path.join(output_dir, "00_GATE_ZERO", "GZ-001-LIBERACAO-ACESSOS-AMBIENTES.md")
-        with open(gz_file, "w", encoding="utf-8") as f:
+        with open(os.path.join(self.output_dir, "00_GATE_ZERO", "GZ-001-LIBERACAO-ACESSOS-AMBIENTES.md"), "w", encoding="utf-8") as f:
             f.write(gz_rendered)
 
-        # 4. Render Epic Card
+        # 2. Epic
         epic_tmpl = load_template("EPIC.template.md")
         epic_rendered = render_template(
             epic_tmpl,
@@ -127,11 +118,10 @@ def test_e2e_generation():
                 "CHILD_CARD_STATUS_2": "READY",
             },
         )
-        epic_file = os.path.join(output_dir, "01_EPICS", "EPIC-01-FUNDACAO-CONCILIACAO.md")
-        with open(epic_file, "w", encoding="utf-8") as f:
+        with open(os.path.join(self.output_dir, "01_EPICS", "EPIC-01-FUNDACAO-CONCILIACAO.md"), "w", encoding="utf-8") as f:
             f.write(epic_rendered)
 
-        # 5. Render User Story Card
+        # 3. User Story
         us_tmpl = load_template("USER_STORY.template.md")
         us_rendered = render_template(
             us_tmpl,
@@ -173,11 +163,10 @@ def test_e2e_generation():
                 "DATABASE_ENTITIES": "tb_statement_uploads, tb_bank_transactions",
             },
         )
-        us_file = os.path.join(output_dir, "02_USER_STORIES", "US-0101-UPLOAD-OFX.md")
-        with open(us_file, "w", encoding="utf-8") as f:
+        with open(os.path.join(self.output_dir, "02_USER_STORIES", "US-0101-UPLOAD-OFX.md"), "w", encoding="utf-8") as f:
             f.write(us_rendered)
 
-        # 6. Render Technical Enabler Card
+        # 4. Enabler
         enabler_tmpl = load_template("TECHNICAL_ENABLER.template.md")
         enabler_rendered = render_template(
             enabler_tmpl,
@@ -205,11 +194,10 @@ def test_e2e_generation():
                 "ACCEPTANCE_CRITERION_3": "Logs estruturados sem vazamento de tokens ou dados sensíveis.",
             },
         )
-        enabler_file = os.path.join(output_dir, "03_TECHNICAL_ENABLERS", "ENABLER-0101-MOCK-LEGADO.md")
-        with open(enabler_file, "w", encoding="utf-8") as f:
+        with open(os.path.join(self.output_dir, "03_TECHNICAL_ENABLERS", "ENABLER-0101-MOCK-LEGADO.md"), "w", encoding="utf-8") as f:
             f.write(enabler_rendered)
 
-        # 7. Render QA Homologation Card
+        # 5. QA Homologation
         qa_tmpl = load_template("QA_HOMOLOGATION.template.md")
         qa_rendered = render_template(
             qa_tmpl,
@@ -241,11 +229,10 @@ def test_e2e_generation():
                 "EVIDENCIA_PAYLOAD": "multipart/form-data; file=extrato_teste_sintetico.ofx",
             },
         )
-        qa_file = os.path.join(output_dir, "04_QA_ACCEPTANCE", "QA-0101-HOMOLOGACAO-M1.md")
-        with open(qa_file, "w", encoding="utf-8") as f:
+        with open(os.path.join(self.output_dir, "04_QA_ACCEPTANCE", "QA-0101-HOMOLOGACAO-M1.md"), "w", encoding="utf-8") as f:
             f.write(qa_rendered)
 
-        # 8. Render Governance Safeguard Card
+        # 6. Governance Safeguard
         gov_tmpl = load_template("GATE_ZERO_SAFEGUARD.template.md")
         gov_rendered = render_template(
             gov_tmpl,
@@ -274,11 +261,10 @@ def test_e2e_generation():
                 "DOCUMENT_PROOF_TYPE": "Relatório de Auditoria de Dados Sintéticos Staging",
             },
         )
-        gov_file = os.path.join(output_dir, "05_GOVERNANCE_SAFEGUARDS", "GOV-001-CONFORMIDADE-LGPD.md")
-        with open(gov_file, "w", encoding="utf-8") as f:
+        with open(os.path.join(self.output_dir, "05_GOVERNANCE_SAFEGUARDS", "GOV-001-CONFORMIDADE-LGPD.md"), "w", encoding="utf-8") as f:
             f.write(gov_rendered)
 
-        # 9. Render Master Index & Traceability Matrix
+        # 7. Master Index
         idx_tmpl = load_template("INDEX_BACKLOG_TAXONOMY.template.md")
         rows = [
             "| [ANEXO_2_RACI-SEC-3] | GZ-001 | Gate Zero | Liberação Integral de Acessos | `00_GATE_ZERO/GZ-001-LIBERACAO-ACESSOS-AMBIENTES.md` | ATENDIDO | ATENDIDO |",
@@ -288,16 +274,14 @@ def test_e2e_generation():
             "| [ANEXO_3_HOMOLOG-SEC-1] | QA-0101 | QA | Roteiro de Homologação M1 | `04_QA_ACCEPTANCE/QA-0101-HOMOLOGACAO-M1.md` | ATENDIDO | ATENDIDO |",
             "| [ANEXO_2_RACI-SEC-6] | GOV-001 | Salvaguarda | Conformidade LGPD Dados Sintéticos | `05_GOVERNANCE_SAFEGUARDS/GOV-001-CONFORMIDADE-LGPD.md` | ATENDIDO | ATENDIDO |",
         ]
-        table_lines = "\n".join(rows)
-
         idx_rendered = render_template(
             idx_tmpl,
             {
-                "PROJETO_NOME": baseline["project_name"],
-                "CLIENTE_NOME": baseline["client_name"],
-                "CONTRATADA_NOME": baseline["contractor_name"],
-                "MODELO_CONTRATACAO": baseline["contracting_mode"],
-                "CONTRATO_MESTRE_REF": baseline["contract_master_ref"],
+                "PROJETO_NOME": "Portal de Conciliação Financeira",
+                "CLIENTE_NOME": "Banco Alpha S.A.",
+                "CONTRATADA_NOME": "HalcyonTech Engenharia",
+                "MODELO_CONTRATACAO": "Modo A (Fixed Price por Milestones)",
+                "CONTRATO_MESTRE_REF": "ANEXO_TECNICO_MESTRE_CONTRATO.md",
                 "DATA_GERACAO": "2026-11-04",
                 "GATE_ZERO_OVERALL_STATUS": "CLEARED",
                 "TOTAL_EPICS_COUNT": "1",
@@ -306,46 +290,80 @@ def test_e2e_generation():
                 "TOTAL_QA_COUNT": "1",
                 "TOTAL_SAFEGUARDS_COUNT": "2",
                 "TOTAL_STORY_POINTS": "8",
-                "TABELA_RASTREABILIDADE_LINHAS": table_lines,
+                "TABELA_RASTREABILIDADE_LINHAS": "\n".join(rows),
             },
         )
-        idx_file = os.path.join(output_dir, "INDEX_BACKLOG_TAXONOMY.md")
-        with open(idx_file, "w", encoding="utf-8") as f:
+        with open(os.path.join(self.output_dir, "INDEX_BACKLOG_TAXONOMY.md"), "w", encoding="utf-8") as f:
             f.write(idx_rendered)
 
-        # 10. Audit all files in output_dir
-        print("--> Auditing generated cards in simulated output directory...")
-        all_files = []
-        for root, _, files in os.walk(output_dir):
-            for file in files:
-                if file.endswith(".md"):
-                    all_files.append(os.path.join(root, file))
+    def test_e2e_valid_generation_passes_all_checks(self):
+        """Verifies that a fully generated backlog passes 100% of validation checks."""
+        self._generate_valid_backlog()
+        success, errors = validate_backlog.run_full_validation(self.output_dir)
+        self.assertTrue(success, f"Expected validation to succeed, but got errors: {errors}")
+        self.assertEqual(len(errors), 0)
 
-        assert len(all_files) == 7, f"Expected 7 markdown files, found {len(all_files)}"
+    def test_invest_story_points_ceiling_detection(self):
+        """Verifies that a User Story exceeding 8 Story Points is detected and rejected."""
+        self._generate_valid_backlog()
+        us_file = os.path.join(self.output_dir, "02_USER_STORIES", "US-0101-UPLOAD-OFX.md")
+        with open(us_file, "r", encoding="utf-8") as f:
+            content = f.read()
+        # Alter SP to 13 (violating INVEST limit of 8)
+        content = content.replace("5 Story Points", "13 Story Points")
+        with open(us_file, "w", encoding="utf-8") as f:
+            f.write(content)
 
-        for fpath in all_files:
-            rel = os.path.relpath(fpath, output_dir)
-            with open(fpath, "r", encoding="utf-8") as f:
-                content = f.read()
+        success, errors = validate_backlog.run_full_validation(self.output_dir)
+        self.assertFalse(success)
+        self.assertTrue(any("INVEST limit of 8 SP" in e for e in errors), f"Expected INVEST error, got {errors}")
 
-            # Check 1: Zero unresolved placeholders
-            unresolved = re.findall(r"\{\{([A-Za-z0-9_]+)\}\}", content)
-            assert len(unresolved) == 0, f"File {rel} has unresolved placeholders: {unresolved}"
+    def test_unresolved_placeholder_detection(self):
+        """Verifies that any unrendered placeholder {{...}} triggers validation failure."""
+        self._generate_valid_backlog()
+        us_file = os.path.join(self.output_dir, "02_USER_STORIES", "US-0101-UPLOAD-OFX.md")
+        with open(us_file, "a", encoding="utf-8") as f:
+            f.write("\n\nTexto adicional com {{PLACEHOLDER_LEAK}} não resolvido.\n")
 
-            # Check 2: Zero HTML comments
-            html_comments = re.findall(r"<!--.*?-->", content, re.DOTALL)
-            assert len(html_comments) == 0, f"File {rel} has HTML comments: {html_comments}"
+        success, errors = validate_backlog.run_full_validation(self.output_dir)
+        self.assertFalse(success)
+        self.assertTrue(any("unresolved placeholders" in e for e in errors), f"Expected placeholder error, got {errors}")
 
-            # Check 3: Minimum content length
-            assert len(content) > 300, f"File {rel} is unexpectedly short"
+    def test_residual_html_comment_detection(self):
+        """Verifies that any leftover HTML comment <!-- ... --> triggers failure."""
+        self._generate_valid_backlog()
+        epic_file = os.path.join(self.output_dir, "01_EPICS", "EPIC-01-FUNDACAO-CONCILIACAO.md")
+        with open(epic_file, "a", encoding="utf-8") as f:
+            f.write("\n<!-- Comentário de template esquecido -->\n")
 
-            print(f"    [VERIFIED] {rel} (size: {len(content)} bytes)")
+        success, errors = validate_backlog.run_full_validation(self.output_dir)
+        self.assertFalse(success)
+        self.assertTrue(any("residual HTML comment" in e for e in errors), f"Expected HTML comment error, got {errors}")
 
-        print("    [PASS] All generated cards conform to DoR/DoD and hygiene invariants.")
-    finally:
-        shutil.rmtree(output_dir)
+    def test_orphan_card_detection(self):
+        """Verifies that an extra physical card not listed in the Index is flagged as an Orphan Card."""
+        self._generate_valid_backlog()
+        orphan_path = os.path.join(self.output_dir, "02_USER_STORIES", "US-9999-EXTRA-UNTRACKED.md")
+        with open(os.path.join(self.output_dir, "02_USER_STORIES", "US-0101-UPLOAD-OFX.md"), "r", encoding="utf-8") as f:
+            content = f.read()
+        with open(orphan_path, "w", encoding="utf-8") as f:
+            f.write(content)
+
+        success, errors = validate_backlog.run_full_validation(self.output_dir)
+        self.assertFalse(success)
+        self.assertTrue(any("Orphan Card" in e for e in errors), f"Expected Orphan Card error, got {errors}")
+
+    def test_ghost_card_detection(self):
+        """Verifies that a matrix row referencing a nonexistent card is flagged as Ghost Card."""
+        self._generate_valid_backlog()
+        idx_file = os.path.join(self.output_dir, "INDEX_BACKLOG_TAXONOMY.md")
+        with open(idx_file, "a", encoding="utf-8") as f:
+            f.write("\n| [ANEXO_1_SOW-SEC-9] | US-8888 | História | Fantasma | `02_USER_STORIES/US-8888-GHOST.md` | ATENDIDO | ATENDIDO |\n")
+
+        success, errors = validate_backlog.run_full_validation(self.output_dir)
+        self.assertFalse(success)
+        self.assertTrue(any("Ghost Card" in e for e in errors), f"Expected Ghost Card error, got {errors}")
 
 
 if __name__ == "__main__":
-    test_e2e_generation()
-    print("=== END-TO-END SIMULATION SUCCEEDED ===")
+    unittest.main()

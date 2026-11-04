@@ -56,6 +56,7 @@ Aprovada a auditoria:
 3. Totalize as métricas consolidadas: contagem de épicos, histórias, enablers, QA suites, salvaguardas e Story Points totais.
 4. Construa a **Matriz de Rastreabilidade Bidirecional**, listando linha a linha cada card gerado, sua cláusula de origem, arquivo físico correspondente e conformidade com DoR/DoD.
 5. Salve o arquivo compilado em `{{output_dir}}/INDEX_BACKLOG_TAXONOMY.md`.
+6. Execute o script de validação determinística automatizada `python3 skills/contract-scrum-orchestrator/scripts/validate_backlog.py {{output_dir}}` para atestar matematicamente zero violações de DoR/DoD, integridade da matriz de rastreabilidade e higienização total de saídas.
 
 ---
 

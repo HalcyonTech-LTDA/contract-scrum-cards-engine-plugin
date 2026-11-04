@@ -18,7 +18,7 @@
 - **Marco Condicionante:** {{CONDITIONAL_TRIGGER_MILESTONE}}
 - **SLA de Resposta / Reação:** {{RESPONSE_SLA_LIMIT}} (ex: até 2 dias úteis de expediente comercial / 16 horas úteis)
 - **Consequência do Não Cumprimento:** {{DEFAULT_CONSEQUENCE}} (ex: congelamento de cronograma 1:1 / cobrança de Standby Fee da Squad / nulidade de solicitação informal)
-- **Salvaguarda LGPD:** {{LGPD_SAFEGUARD_CLAUSE}} (Cliente Controlador / Contratada Operadora / Vedação absoluta de dados reais de produção em Staging e Dev)
+- **Salvaguarda LGPD / Diretriz de Conformidade:** {{LGPD_SAFEGUARD_CLAUSE}} (Cliente Controlador / Contratada Operadora / Vedação absoluta de dados reais de produção em Staging e Dev)
 
 ---
 
@@ -36,7 +36,16 @@
 
 ---
 
-## 5. Critérios de Baixa / Conclusão do Card (Closure Gate)
-- Atendimento integral dos pré-requisitos listados no item 3.
-- Assinatura bilateral ou validação formal do Ponto Focal do Cliente.
-- Atualização do painel executivo de governança no `INDEX_BACKLOG_TAXONOMY.md`.
+## 5. Checklist de Definition of Ready (DoR) da Salvaguarda / Gate Zero
+- [ ] Cláusula contratual de origem (`{{GOVERNANCE_CLAUSE_REF}}`) explicitada e validada.
+- [ ] Gatilhos de acionamento, prazos e SLAs claramente estabelecidos.
+- [ ] Pontos focais bilateralmente designados (Contratada e Cliente).
+- [ ] Rito de comunicação formal estipulado, com vedação expressa a canais informais.
+
+---
+
+## 6. Checklist de Definition of Done (DoD) da Salvaguarda / Gate Zero
+- [ ] Atendimento integral dos pré-requisitos e itens operacionais de verificação.
+- [ ] Evidências documentais e registros auditáveis coletados (`{{DOCUMENT_PROOF_TYPE}}`).
+- [ ] Assinatura bilateral do Termo formal emitido ou log de conformidade aprovado pelo Ponto Focal.
+- [ ] Atualização do painel executivo de governança no `INDEX_BACKLOG_TAXONOMY.md`.
