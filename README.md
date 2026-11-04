@@ -4,15 +4,33 @@
 ### Global Multi-Agent Engineering Pipeline for Contract-to-Agile Backlog Decomposition
 
 [![Antigravity Plugin](https://img.shields.io/badge/Antigravity-Plugin%20v1.0.0-4F46E5.svg)](https://antigravity.google)
-[![Architecture: Staged Multi-Agent DAG](https://img.shields.io/badge/Architecture-Staged%20DAG%20%2B%20Fan--Out%2FFan--In%20%2B%20Reflexion-06B6D4.svg)](#4-multi-agent-orchestration-architecture--comparative-justification)
 [![License: MIT](https://img.shields.io/badge/License-MIT-10B981.svg)](./LICENSE)
-[![Zero-Monolith Enforced](https://img.shields.io/badge/Backlog-Granular%20Modular%20Markdown-F59E0B.svg)](#3-granular-hierarchy--directory-partitioning)
+[![Organization](https://img.shields.io/badge/Organization-HalcyonTech--LTDA-black.svg)](https://github.com/HalcyonTech-LTDA)
 
 <p align="center">
-  <b>Transform binding contract technical annexes (SOW, RACI, Homologation, CR, and SLA) into an enterprise-grade, auditable Scrum/Agile backlog with granular Markdown cards, strict Definition of Ready (DoR), Definition of Done (DoD), and 100% bidirectional contractual traceability.</b>
+  <b>Pipeline agêntico nativo em arquitetura Staged Multi-Agent DAG com Fan-Out/Fan-In e Generator-Critic (Reflexion) para decomposição granular de anexos técnicos contratuais (SOW, RACI, Homologação, CR e SLA) em cards ágeis profissionais (Epics, Stories, Enablers, QA e Safeguards) com rastreabilidade total, DoR e DoD rigorosos.</b>
 </p>
 
 </div>
+
+---
+
+## Installation & Verification
+
+### Antigravity CLI (`agy`)
+
+Install directly into your Antigravity environment via the CLI:
+
+```bash
+agy plugin install https://github.com/HalcyonTech-LTDA/contract-scrum-cards-engine-plugin
+```
+
+Verify that the plugin is active and adheres to the strict official schema:
+
+```bash
+agy plugin list
+agy plugin validate --strict ./contract-scrum-cards-engine-plugin
+```
 
 ---
 
@@ -30,6 +48,8 @@ By ingesting the binding contract technical annexes produced by upstream engines
 
 ---
 
+---
+
 ## 2. Critical Negative Constraints & Architectural Invariants
 
 > [!CAUTION]
@@ -39,6 +59,8 @@ By ingesting the binding contract technical annexes produced by upstream engines
 > 3. **Zero Scope Creep Invariant (Anti-Gold-Plating):** No agent may invent features, alter business rules, or add capabilities not explicitly grounded in the contract annexes. Any non-contractual scope must be flagged and isolated as a candidate for Anexo 4 (Change Request).
 > 4. **Anti-Vagueness Invariant:** Stories and acceptance criteria must never contain subjective qualifiers ("user-friendly", "fast", "intuitive", "optimize"). All criteria must follow formal BDD/Gherkin syntax with testable assertions.
 > 5. **Output Hygiene:** Generated markdown cards must have all HTML template comments (`<!-- ... -->`) completely stripped, and zero unresolved placeholders (`{{...}}`) may remain in the final deliverables.
+
+---
 
 ---
 
@@ -70,6 +92,8 @@ backlog/
     ├── GOV-003-GOVERNANCA-CHANGE-REQUESTS.md
     └── GOV-004-RITO-GARANTIA-SUPORTE-SLA.md
 ```
+
+---
 
 ---
 
@@ -130,6 +154,8 @@ flowchart TD
 
 ---
 
+---
+
 ## 5. Normative Standards: Definition of Ready (DoR) & Definition of Done (DoD)
 
 ### 5.1 Definition of Ready (DoR) — 8 Pillars
@@ -155,42 +181,6 @@ Governed by `rules/definition-of-done-standard.md`. A card cannot be closed as `
 8. **Homologation Readiness (Anexo 3):** Test evidence package generated, triggering the 5-day Tacit Acceptance clock with the Client PO.
 
 ---
-
-## 6. Directory Structure (Antigravity Plugin Compliant)
-
-```
-contract-scrum-cards-engine-plugin/
-├── plugin.json                                         # Plugin manifest (Antigravity v1 schema)
-├── README.md                                           # Comprehensive documentation
-├── LICENSE                                             # MIT License
-├── .gitignore                                          # VCS ignores (.scratch, logs, output)
-├── rules/
-│   ├── definition-of-ready-standard.md                 # DoR normative standard (8 pillars)
-│   ├── definition-of-done-standard.md                  # DoD normative standard (8 criteria)
-│   └── contract-to-scrum-traceability.md               # Traceability & taxonomy rules
-├── skills/
-│   └── contract-scrum-orchestrator/
-│       ├── SKILL.md                                    # Skill definition & DAG orchestration
-│       ├── scripts/
-│       │   └── validate_backlog.py                     # Deterministic automated backlog validator
-│       └── templates/
-│           ├── EPIC.template.md                        # Milestone & Epic card template
-│           ├── USER_STORY.template.md                  # User Story card template
-│           ├── TECHNICAL_ENABLER.template.md           # Enabler & Spike card template
-│           ├── QA_HOMOLOGATION.template.md             # UAT & Homologation card template
-│           ├── GATE_ZERO_SAFEGUARD.template.md         # Gate Zero & Safeguard card template
-│           └── INDEX_BACKLOG_TAXONOMY.template.md      # Master Backlog Index template
-├── agents/
-│   ├── annexes-ingestion-normalizer.md                 # Normalization & Pre-flight agent
-│   ├── po-backlog-decomposer.md                        # Functional Epic & Story agent
-│   ├── architecture-enabler-decomposer.md              # Technical Enabler & NFR agent
-│   ├── qa-homologation-decomposer.md                   # UAT & Acceptance agent
-│   ├── governance-safeguard-decomposer.md              # Gate Zero, LGPD & SLA agent
-│   └── scrum-quality-auditor.md                        # Fan-In Auditor & Compiler agent
-└── tests/
-    ├── test_plugin_integrity.py                        # Plugin manifest, agents, rules & templates test suite
-    └── test_e2e_backlog_generation.py                  # End-to-end generation, INVEST & DoR/DoD audit test suite
-```
 
 ---
 
@@ -232,6 +222,8 @@ python3 -m unittest discover -s tests -p "test_*.py" -v
 
 ---
 
+---
+
 ## 8. Upstream & Downstream Ecosystem Integration
 
 This plugin is part of the integrated enterprise engineering suite maintained by HalcyonTech:
@@ -245,19 +237,72 @@ This plugin is part of the integrated enterprise engineering suite maintained by
 
 ---
 
-## 9. License
+---
 
-This project is licensed under the terms of the [MIT License](./LICENSE).  
-Copyright (c) 2026 HalcyonTech LTDA.
+## What's Included (Component Catalog)
 
+### Contextual Rules (`rules/`)
+Automatically loaded to govern and protect project contexts:
+- **[`contract-to-scrum-traceability.md`](rules/contract-to-scrum-traceability.md)**: Padrão normativo de rastreabilidade bidirecional, taxonomia, particionamento granular e governança anti-vazamento de escopo entre contratos e cards ágeis.
+- **[`definition-of-done-standard.md`](rules/definition-of-done-standard.md)**: Padrão normativo de Definition of Done (DoD) aplicável obrigatoriamente para conclusão e homologação de cards ágeis derivados de anexos técnicos contratuais.
+- **[`definition-of-ready-standard.md`](rules/definition-of-ready-standard.md)**: Padrão normativo de Definition of Ready (DoR) aplicável obrigatoriamente a cards ágeis derivados de anexos técnicos contratuais (SOW, RACI, Homologação, CR e SLA).
+
+### Procedural Skills (`skills/`)
+On-demand actionable workflows and runbooks:
+- **[`/contract-scrum-orchestrator`](skills/contract-scrum-orchestrator/SKILL.md)**: Orquestra a esteira agêntica (Staged Multi-Agent DAG) de engenharia para transformar os anexos técnicos do contrato (SOW, RACI, Homologação, CR e SLA) em um backlog ágil profissional particionado em cards modulares (Epics, Stories, Enablers, QA e Salvaguardas), com rastreabilidade total, Definition of Ready (DoR) e Definition of Done (DoD).
+
+### Specialized Subagents (`agents/`)
+Autonomous personas delegated for in-depth execution:
+- **[`annexes-ingestion-normalizer`](agents/annexes-ingestion-normalizer.md)**: Ingesta e normaliza os anexos técnicos contratuais (SOW, RACI, Homologação, CR, SLA) ou o Documento Mestre consolidado, validando pré-condições estruturais e extraindo a baseline canônica do backlog em formato JSON intermediário.
+- **[`architecture-enabler-decomposer`](agents/architecture-enabler-decomposer.md)**: Arquiteto de Soluções e Tech Lead. Decompõe requisitos não-funcionais (NFRs), premissas estruturais condicionantes, integrações de APIs e arquitetura de dados em Enablers Técnicos e Spikes de Arquitetura em markdown individual.
+- **[`governance-safeguard-decomposer`](agents/governance-safeguard-decomposer.md)**: Especialista em Governança Jurídico-Técnica, RACI, Gate Zero, LGPD e SLA. Decompõe os Anexos 2 (RACI/Gate Zero/LGPD), 4 (Change Request) e 5 (Garantia/SLA) em cards de salvaguardas operacionais em 00_GATE_ZERO/ e 05_GOVERNANCE_SAFEGUARDS/.
+- **[`po-backlog-decomposer`](agents/po-backlog-decomposer.md)**: Especialista em requisitos de produto e decomposição ágil. Transforma o escopo funcional substantivado e os marcos do SOW em Épicos contratuais e Histórias de Usuário atômicas com critérios BDD/Gherkin, rastreabilidade e DoR/DoD.
+- **[`qa-homologation-decomposer`](agents/qa-homologation-decomposer.md)**: Especialista em Qualidade, Automação de Testes e Aceite Contratual. Decompõe o Anexo 3 (Protocolo de Homologação) em planos de teste de homologação em Staging, taxonomia P1-P4, template de evidência técnica e roteiros de aceite tácito e reteste.
+- **[`scrum-quality-auditor`](agents/scrum-quality-auditor.md)**: Agile Quality Coach e Auditor de Conformidade Contratual. Atua na fase de Fan-In em loop Generator-Critic (Reflexion), auditando 100% dos cards gerados contra o DoR, DoD e rastreabilidade com o contrato, compilando o INDEX_BACKLOG_TAXONOMY.md.
+
+---
+
+## Directory Hierarchy
+
+```text
+contract-scrum-cards-engine-plugin/
+├── plugin.json              # Official Antigravity manifest (schema v1)
+├── LICENSE                  # MIT License (Copyright 2026 HalcyonTech LTDA)
+├── .gitignore               # System ignores & installed_version.json exclusions
+├── .gitattributes           # Deterministic line endings (* text=auto eol=lf)
+├── README.md                # Golden Standard documentation & runbook
+├── assets/
+│   └── logo.svg             # Official Halcyon Tech corporate vector symbol
+├── rules/                   # Contextual rules discovered automatically
+│   └── contract-to-scrum-traceability.md
+│   └── definition-of-done-standard.md
+│   └── definition-of-ready-standard.md
+├── skills/                  # Actionable procedural skills (Progressive Disclosure)
+│   └── contract-scrum-orchestrator/
+│       └── SKILL.md
+└── agents/                  # Specialized autonomous subagents
+    └── annexes-ingestion-normalizer.md
+    └── architecture-enabler-decomposer.md
+    └── governance-safeguard-decomposer.md
+    └── po-backlog-decomposer.md
+    └── qa-homologation-decomposer.md
+    └── scrum-quality-auditor.md
+```
 
 ---
 
 ## 💡 Prompt Recipes & Use Cases
 
 ```markdown
-- Execute /contract-scrum-orchestrator para decompor os anexos técnicos contratuais em cards ágeis granulares em markdown
-- Transforme o ANEXO_TECNICO_MESTRE_CONTRATO.md em backlog ágil com épicos, histórias BDD, enablers, QA e salvaguardas
-- Decomponha o SOW e anexos em histórias de usuário INVEST (máx 8 SP) com DoR e DoD normativos
-- Audite o backlog ágil com o scrum-quality-auditor e gere a matriz de rastreabilidade bidirecional
+- "Execute /contract-scrum-orchestrator para decompor os anexos técnicos contratuais em cards ágeis granulares em markdown"
+- "Transforme o ANEXO_TECNICO_MESTRE_CONTRATO.md em backlog ágil com épicos, histórias BDD, enablers, QA e salvaguardas"
+- "Decomponha o SOW e anexos em histórias de usuário INVEST (máx 8 SP) com DoR e DoD normativos"
+- "Audite o backlog ágil com o scrum-quality-auditor e gere a matriz de rastreabilidade bidirecional"
 ```
+
+---
+
+## 📄 License & Corporate Governance
+
+Distributed under the **MIT License**. Copyright (c) 2026 **HalcyonTech LTDA**.  
+Engineered with precision and excellence by [Halcyon Tech](https://github.com/HalcyonTech-LTDA).
