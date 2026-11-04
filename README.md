@@ -249,3 +249,15 @@ This plugin is part of the integrated enterprise engineering suite maintained by
 
 This project is licensed under the terms of the [MIT License](./LICENSE).  
 Copyright (c) 2026 HalcyonTech LTDA.
+
+
+---
+
+## 💡 Prompt Recipes & Use Cases
+
+```markdown
+- Execute /contract-scrum-orchestrator para decompor os anexos técnicos contratuais em cards ágeis granulares em markdown
+- Transforme o ANEXO_TECNICO_MESTRE_CONTRATO.md em backlog ágil com épicos, histórias BDD, enablers, QA e salvaguardas
+- Decomponha o SOW e anexos em histórias de usuário INVEST (máx 8 SP) com DoR e DoD normativos
+- Audite o backlog ágil com o scrum-quality-auditor e gere a matriz de rastreabilidade bidirecional
+```

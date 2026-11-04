@@ -4,27 +4,20 @@
   "displayName": "Contract Scrum Cards Engine",
   "version": "1.0.0",
   "description": "Pipeline agêntico nativo em arquitetura Staged Multi-Agent DAG com Fan-Out/Fan-In e Generator-Critic (Reflexion) para decomposição granular de anexos técnicos contratuais (SOW, RACI, Homologação, CR e SLA) em cards ágeis profissionais (Epics, Stories, Enablers, QA e Safeguards) com rastreabilidade total, DoR e DoD rigorosos.",
-  "author": "Engineering Architecture Office",
+  "author": {
+    "name": "Halcyon Tech",
+    "url": "https://github.com/HalcyonTech-LTDA"
+  },
   "suggestedPrompts": [
     "Execute /contract-scrum-orchestrator para decompor os anexos técnicos contratuais em cards ágeis granulares em markdown",
     "Transforme o ANEXO_TECNICO_MESTRE_CONTRATO.md em backlog ágil com épicos, histórias BDD, enablers, QA e salvaguardas",
-    "Decomponha o SOW e anexos em histórias de usuário INVEST (máx 8 SP) com DoR e DoD normativos",
-    "Audite o backlog ágil com o scrum-quality-auditor e gere a matriz de rastreabilidade bidirecional"
+    "Decomponha o SOW e anexos em histórias de usuário INVEST (máx 8 SP) com DoR e DoD normativos"
   ],
   "skills": [
     "skills/contract-scrum-orchestrator"
   ],
-  "agents": [
-    "agents/annexes-ingestion-normalizer.md",
-    "agents/po-backlog-decomposer.md",
-    "agents/architecture-enabler-decomposer.md",
-    "agents/qa-homologation-decomposer.md",
-    "agents/governance-safeguard-decomposer.md",
-    "agents/scrum-quality-auditor.md"
-  ],
-  "rules": [
-    "rules/definition-of-ready-standard.md",
-    "rules/definition-of-done-standard.md",
-    "rules/contract-to-scrum-traceability.md"
-  ]
+  "homepage": "https://github.com/HalcyonTech-LTDA/contract-scrum-cards-engine-plugin",
+  "repository": "https://github.com/HalcyonTech-LTDA/contract-scrum-cards-engine-plugin",
+  "license": "MIT",
+  "logo": "assets/logo.svg"
 }
