@@ -1,0 +1,22 @@
+{
+  "name": "contract-scrum-cards-engine",
+  "version": "1.0.0",
+  "description": "Pipeline agêntico nativo em arquitetura Staged Multi-Agent DAG com Fan-Out/Fan-In e Generator-Critic (Reflexion) para decomposição granular de anexos técnicos contratuais (SOW, RACI, Homologação, CR e SLA) em cards ágeis profissionais (Epics, Stories, Enablers, QA e Safeguards) com rastreabilidade total, DoR e DoD rigorosos.",
+  "author": "Engineering Architecture Office",
+  "skills": [
+    "skills/contract-scrum-orchestrator"
+  ],
+  "agents": [
+    "agents/annexes-ingestion-normalizer.md",
+    "agents/po-backlog-decomposer.md",
+    "agents/architecture-enabler-decomposer.md",
+    "agents/qa-homologation-decomposer.md",
+    "agents/governance-safeguard-decomposer.md",
+    "agents/scrum-quality-auditor.md"
+  ],
+  "rules": [
+    "rules/definition-of-ready-standard.md",
+    "rules/definition-of-done-standard.md",
+    "rules/contract-to-scrum-traceability.md"
+  ]
+}
